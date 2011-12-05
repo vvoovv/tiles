@@ -1,0 +1,34 @@
+.mblSpinWheelSlot {
+	position: relative;
+	overflow: hidden;
+	top: 0px;
+	border: solid orange 10px;
+}
+
+.mblSpinWheelSlotLabel {
+	padding: 0;
+	overflow: hidden;
+}
+
+.mblSpinWheelSlotLabel img{
+	vertical-align: middle;
+}
+
+.mblSpinWheelSlotContainer {
+	position: relative;
+}
+
+.mblSpinWheelSlotPanel {
+	position: absolute;
+	top: 0px;
+	padding: 0;
+	width: 100%;
+}
+
+.mblSpinWheelSlotTouch {
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}

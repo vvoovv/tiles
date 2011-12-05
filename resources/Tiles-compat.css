@@ -1,0 +1,20 @@
+.dj_ie .mblSpinWheelSlotTouch {
+	background: #FFF;
+	filter: alpha(opacity=0);
+}
+.dj_ie6 .mblSpinWheelBar, .dj_ie7 .mblSpinWheelBar {
+	z-index: -1;
+}
+*:first-child+html .mblSpinWheelSlotTouch { /* IE7 hack */
+	background: white;
+	filter: alpha(opacity=0);
+	height: 200px;
+}
+*html .mblSpinWheelSlotTouch { /* IE6 hack */
+	background: white;
+	filter: alpha(opacity=0);
+	height: 200px;
+}
+.mblSpinWheelSlotTouch, .mblSpinWheelSlotPanel {
+	left: 0px;
+}

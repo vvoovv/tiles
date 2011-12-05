@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>dojo tiles: OpenStreetMap demo</title>
+<link href="../resources/Tiles.css" rel="stylesheet">
+<link href="../resources/Tiles-compat.css" rel="stylesheet">
+<script type="text/javascript" src="../../../dojo/dojo.js" dojoConfig="parseOnLoad: false"></script>
+<style>
+#container {
+	width: 800px;
+	height: 600px;
+	margin: 10px auto;
+}
+.tileInfo {
+	position:absolute;
+	top:100px;
+	left:0px;
+	width: 100%;
+	text-align: center;
+	color:red;
+	font-weight:bold;
+	font-size:3em;
+}
+</style>
+
+<script>
+var tiles,
+	app = {}
+;
+require([
+	"dojox/tiles/Tileable",
+	//"dojox/mobile", // This is a mobile app.
+	//"dojox/mobile/compat", // This mobile app supports running on desktop browsers
+	//"dojox/css3/fx",
+	//"dojo/_base/fx",
+	"dojo/domReady!"
+], function(Tileable) {
+	tiles = Tileable({
+		//tileSize: [44, 44],
+		center: [1480, 600],
+		extent: [0, 0, 2048, 2048],
+		wrapHor: true,
+		zoom: 3,
+		getTileContent: function(tile, zoom, x, y) {
+			//dojo.style(div, "border", "50px solid red");
+			//var innerHTML =	"<img src='../../../data/"+zoom+"/"+x+"/"+y+".png'>" +
+			var innerHTML =	"<img src='http://a.tile.openstreetmap.org/"+zoom+"/"+x+"/"+y+".png'>" +
+							"<span class='tileInfo'>"+x+","+y+"</span>";
+			tile.div.innerHTML = innerHTML;
+		},
+		extraTiles: 1
+	}, "container");
+	tiles.startup();
+
+	app.expand = function expand() {
+		dojo.style(tiles.tiles[20].div,{
+			transformOrigin: "90% 90%"
+		});
+
+		baseFx.animateProperty({
+			duration: 1000,
+			node: tiles.tiles[20].div,//tiles.containerNode,
+			properties: {
+				transform: {
+					start: "scale(1)",
+					end: "scale(2)"
+				}
+			}
+		}).play();
+	};
+});
+
+
+
+
+</script>
+</head>
+
+<body>
+	<button onclick="tiles.doZoom(2);">+</button><button onclick="tiles.doZoom(-2);">-</button>
+	<!--
+	<button onclick="app.expand();">expand</button>
+	-->
+	<div id="container"></div>
+</body>
+</html>
