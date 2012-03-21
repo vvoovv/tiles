@@ -1,4 +1,4 @@
-[Demo](http://vvoovv.github.com/dojox/tiles/tests/tiles.html)
+[Demo](http://vvoovv.github.com/tiles/tiles/tests/tiles.html)
 
 ### Install
 * Download Dojo Toolkit SDK (source code) from http://dojotoolkit.org/download/ and unpack it
