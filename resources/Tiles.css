@@ -18,13 +18,6 @@
 	position: relative;
 }
 
-.mblSpinWheelSlotPanel {
-	position: absolute;
-	top: 0px;
-	padding: 0;
-	width: 100%;
-}
-
 .mblSpinWheelSlotTouch {
 	position: absolute;
 	top: 0px;

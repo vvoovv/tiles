@@ -15,6 +15,6 @@
 	filter: alpha(opacity=0);
 	height: 200px;
 }
-.mblSpinWheelSlotTouch, .mblSpinWheelSlotPanel {
+.mblSpinWheelSlotTouch {
 	left: 0px;
 }

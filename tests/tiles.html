@@ -6,11 +6,11 @@
 <title>dojo tiles: OpenStreetMap demo</title>
 <link href="../resources/Tiles.css" rel="stylesheet">
 <link href="../resources/Tiles-compat.css" rel="stylesheet">
-<script type="text/javascript" src="../../../dojo/dojo.js" dojoConfig="parseOnLoad: false"></script>
+<script src="../../dojo/dojo.js" data-dojo-config="parseOnLoad: false, async: true"></script>
 <style>
 #container {
 	width: 800px;
-	height: 600px;
+	height: 400px;
 	margin: 10px auto;
 }
 .tileInfo {
@@ -30,19 +30,20 @@ var tiles,
 	app = {}
 ;
 require([
-	"dojox/tiles/Tileable",
+	"tiles/Tileable",
 	//"dojox/mobile", // This is a mobile app.
 	//"dojox/mobile/compat", // This mobile app supports running on desktop browsers
 	//"dojox/css3/fx",
 	//"dojo/_base/fx",
 	"dojo/domReady!"
 ], function(Tileable) {
-	tiles = Tileable({
+	tiles = new Tileable({
 		//tileSize: [44, 44],
-		center: [1480, 600],
-		extent: [0, 0, 2048, 2048],
+		djeoCenter: [37.6193777, 54.1929348],
+		//center: [1480, 600],
+		//extent: [0, 0, 2048, 2048],
 		wrapHor: true,
-		zoom: 3,
+		zoom: 18, //3,
 		getTileContent: function(tile, zoom, x, y) {
 			//dojo.style(div, "border", "50px solid red");
 			//var innerHTML =	"<img src='../../../data/"+zoom+"/"+x+"/"+y+".png'>" +
