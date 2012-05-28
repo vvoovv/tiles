@@ -169,7 +169,7 @@ return declare(null, {
 		for (var x=0; x<this.numTilesX; x++) {
 			for (var y=0; y<this.numTilesY; y++) {
 				tiles[tileCounter] = {
-					emptry: true,
+					empty: true,
 					div: domConstruct.create("DIV", {
 						className: "mblSpinWheelSlotLabel",
 						style: {
