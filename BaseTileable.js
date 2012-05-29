@@ -103,8 +103,11 @@ return declare(null, {
 		if (!dojo.isArray(this.tileSize)) {
 			this.tileSize = [this.tileSize, this.tileSize];
 		}
+		if (kwArgs.zoom!==undefined) {
+			this.zoom = kwArgs.zoom;
+		}
 		if (!kwArgs.extent) {
-			var _pow = Math.pow(2, kwArgs.zoom);
+			var _pow = Math.pow(2, this.zoom);
 			this.extent = [0, 0, this.tileSize[0] * _pow, this.tileSize[1] * _pow];
 		}
 		if (!kwArgs.center) {
@@ -143,17 +146,13 @@ return declare(null, {
 	},
 
 	_buildRendering: function(){
-		this._calculateTileBounds();
-		
-		domClass.add(this.domNode, "mblSpinWheelSlot");
-
-		this.containerNode = domConstruct.create("div", {className:"mblSpinWheelSlotContainer", style: {position: "relative"}});
+		this.containerNode = domConstruct.create("div", {style: {position: "relative"}});
 		this.containerNode.style.height
 			= (win.global.innerHeight||win.doc.documentElement.clientHeight) * 2 + "px"; // must bigger than the screen
 
 		this.buildTiles();
 		this.domNode.appendChild(this.containerNode);
-		this.touchNode = this.domNode;//domConstruct.create("DIV", {className:"mblSpinWheelSlotTouch"}, this.domNode);
+		this.touchNode = this.domNode;
 		setSelectable(this.domNode, false);
 	},
 	
@@ -169,9 +168,8 @@ return declare(null, {
 		for (var x=0; x<this.numTilesX; x++) {
 			for (var y=0; y<this.numTilesY; y++) {
 				tiles[tileCounter] = {
-					emptry: true,
-					div: domConstruct.create("DIV", {
-						className: "mblSpinWheelSlotLabel",
+					empty: true,
+					div: domConstruct.create("div", {
 						style: {
 							position: "absolute",
 							left: x*this.tileSize[0]+"px",
@@ -199,26 +197,6 @@ return declare(null, {
 	},
 
 	_startup: function(){
-		/*
-		connect.connect(this.touchNode, "click", this, function(event){
-			var borderBox = geometry.position(this.domNode, true),
-				divX = Math.floor(event.pageX - borderBox.x - style.get(this.domNode, "borderLeftWidth")),
-				divY = Math.floor(event.pageY - borderBox.y - style.get(this.domNode, "borderTopWidth"))
-				pos = this.getPos(),
-				// calculate position of the click event relative to the top left corner of the tiles set
-				x = -this._left + (this.x1-this.tileOffsetX)*this.tileSize[0] - pos.x + divX,
-				y = -this._top + (this.y1-this.tileOffsetY)*this.tileSize[1] - pos.y + divY
-			;
-			x -= this.extent[2]/2;
-			y = -y + this.extent[3]/2;
-			x *= 2*Math.PI*u.earthRadius/this.extent[2];
-			y *= 2*Math.PI*u.earthRadius/this.extent[3];
-			var ll = proj.transform("EPSG:3857", "EPSG:4326", [x, y], "Point");
-			x = ll[0];
-			y = ll[1];
-			console.debug(x, y);
-		});
-		*/
 		this.updateTileDivs();
 	},
 
