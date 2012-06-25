@@ -200,7 +200,7 @@ return declare(null, {
 		this.updateTileDivs();
 	},
 
-	doZoom: function(zoomAmount, divX, divY) {
+	doZoom: function(zoom, divX, divY) {
 		this.updateDivDimensions();
 
 		if (divX === undefined) {
@@ -208,10 +208,10 @@ return declare(null, {
 			divY = this.halfHeight;
 		}
 		
-		this.zoom += zoomAmount/2;
-		if (zoomAmount<0) zoomAmount = -1/zoomAmount;
+		var extentScaling = Math.pow(2, zoom - this.zoom);
+		this.zoom = zoom;
 		for (var i=0; i<4; i++) {
-			this.extent[i] = Math.floor(zoomAmount*this.extent[i]);
+			this.extent[i] = Math.floor(extentScaling*this.extent[i]);
 		}
 		this._calculateTileBounds();
 		
@@ -221,8 +221,8 @@ return declare(null, {
 			x = -this._left + (this.x1-this.tileOffsetX)*this.tileSize[0] - pos.x + divX,
 			y = -this._top + (this.y1-this.tileOffsetY)*this.tileSize[1] - pos.y + divY,
 		// position after zooming
-			newX = Math.floor(zoomAmount*x),
-			newY = Math.floor(zoomAmount*y)
+			newX = Math.floor(extentScaling*x),
+			newY = Math.floor(extentScaling*y)
 		;
 
 		// point in the tiles set where the click event occured remains invariant
