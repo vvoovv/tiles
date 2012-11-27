@@ -40,7 +40,7 @@ var setSelectable = function(node, selectable){
 };
 
 // module:
-//		dojox/tiles/Tileable
+//		tiles/BaseTileable
 // summary:
 //		The base class for tiles
 
@@ -51,7 +51,6 @@ return declare(null, {
 	maxSpeed: 500,
 	scrollBar: false,
 	constraint: false,
-	androidWorkaroud: false, // disable workaround in SpinWheel
 	
 	numTilesX: 0,
 	numTilesY: 0,
@@ -75,8 +74,6 @@ return declare(null, {
 	zoom: 0,
 	center: null,
 	setTileContent: null,
-	
-	scrollDir: "vh",
 	
 	offsetX: 0,
 	offsetY: 0,
@@ -134,10 +131,10 @@ return declare(null, {
 
 		// all bounds are inclusive
 		// TODO: consider negative extent and bounds
-		bounds[0] = Math.floor( (extent[0]+1)/size[0] );
-		bounds[1] = Math.floor( (extent[1]+1)/size[1] );
-		bounds[2] = Math.floor( (extent[2]-1)/size[0] );
-		bounds[3] = Math.floor( (extent[3]-1)/size[1] );
+		bounds[0] = (extent[0]+1)/size[0];
+		bounds[1] = (extent[1]+1)/size[1];
+		bounds[2] = (extent[2]-1)/size[0];
+		bounds[3] = (extent[3]-1)/size[1];
 	},
 	
 	_mixin: function() {
@@ -221,8 +218,8 @@ return declare(null, {
 			x = -this._left + (this.x1-this.tileOffsetX)*this.tileSize[0] - pos.x + divX,
 			y = -this._top + (this.y1-this.tileOffsetY)*this.tileSize[1] - pos.y + divY,
 		// position after zooming
-			newX = Math.floor(extentScaling*x),
-			newY = Math.floor(extentScaling*y)
+			newX = extentScaling*x,
+			newY = extentScaling*y
 		;
 
 		// point in the tiles set where the click event occured remains invariant
@@ -367,37 +364,18 @@ return declare(null, {
 			// change in offsetY in integer number of tiles
 			dyt = (dy - dy%this.tileSize[1])/this.tileSize[1]
 		;
-		//console.debug(dx, dxt, dy, dyt);
-		/*	
-		// output the map center
-		var centerX = -this._left + (this.x1-this.tileOffsetX)*this.tileSize[0] - pos.x + this.halfWidth;
-		var centerY = -this._top + (this.y1-this.tileOffsetY)*this.tileSize[1] - pos.y + this.halfHeight;
-		centerX -= this.extent[2]/2;
-		centerY = -centerY + this.extent[3]/2;
-		centerX *= 2*Math.PI*u.earthRadius/this.extent[2];
-		centerY *= 2*Math.PI*u.earthRadius/this.extent[3];
-		var ll = proj.transform("EPSG:3857", "EPSG:4326", [centerX, centerY], "Point");
-		centerX = ll[0];
-		centerY = ll[1];
-		console.debug(centerX, centerY);
-		*/
+
 		this.swapTiles(
 			Math.abs(dxt) >= this.swapThresholdX ? dxt : 0,
 			Math.abs(dyt) >= this.swapThresholdY ? dyt : 0
 		);
 		if (Math.abs(dxt) >= this.swapThresholdX) {
-			console.debug("x swaped!");
 			this.offsetX = pos.x - dx%this.tileSize[0];
 		}
 		if (Math.abs(dyt) >= this.swapThresholdY) {
-			console.debug("y swaped!");
 			this.offsetY = pos.y - dy%this.tileSize[1];
 		}
-		//this.inherited(arguments);
-		/*var x = e.touches ? e.touches[0].pageX : e.pageX;
-		var y = e.touches ? e.touches[0].pageY : e.pageY;
-		var dx = x - this.touchStartX;
-		var dy = y - this.touchStartY;*/
+
 		this.scrollTo({x:this.startPos.x + shiftX, y:this.startPos.y + shiftY});
 	},
 	
@@ -542,12 +520,6 @@ return declare(null, {
 	slideTo: function(/*Object*/to, /*Number*/duration, /*String*/easing){
 		
 	},
-
-	resize: function(e){
-		if(this._penddingValue){
-			this.setValue(this._penddingValue);
-		}
-	},
 	
 	scrollTo: function(/*Object*/to){ // to: {x, y}
 		// summary:
@@ -557,9 +529,10 @@ return declare(null, {
 			s.webkitTransform = this.makeTranslateStr(to);
 		}
 		else{
-			s.top = to.y + "px";
-			s.left = to.x + "px";
+			s.top = Math.round(to.y) + "px";
+			s.left = Math.round(to.x) + "px";
 		}
+		this._pos = to;
 	},
 	
 	makeTranslateStr: function(to) {
@@ -571,19 +544,7 @@ return declare(null, {
 	getPos: function() {
 		// summary:
 		//		Get the top position in the midst of animation
-		if(has("webkit")){
-			var m = win.doc.defaultView.getComputedStyle(this.containerNode, '')["-webkit-transform"];
-			if(m && m.indexOf("matrix") === 0){
-				var arr = m.split(/[,\s\)]+/);
-				return {y:arr[5] - 0, x:arr[4] - 0};
-			}
-			return {x:0, y:0};
-		}else{
-			// this.containerNode.offsetTop does not work here,
-			// because it adds the height of the top margin.
-			var y = parseInt(this.containerNode.style.top) || 0;
-			return {y:y, x:this.containerNode.offsetLeft};
-		}
+		return this._pos || {x:0,y:0};
 	}
 });
 });
