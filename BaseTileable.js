@@ -131,10 +131,10 @@ return declare(null, {
 
 		// all bounds are inclusive
 		// TODO: consider negative extent and bounds
-		bounds[0] = (extent[0]+1)/size[0];
-		bounds[1] = (extent[1]+1)/size[1];
-		bounds[2] = (extent[2]-1)/size[0];
-		bounds[3] = (extent[3]-1)/size[1];
+		bounds[0] = Math.floor( (extent[0]+1)/size[0] );
+		bounds[1] = Math.floor( (extent[1]+1)/size[1] );
+		bounds[2] = Math.floor( (extent[2]-1)/size[0] );
+		bounds[3] = Math.floor( (extent[3]-1)/size[1] );
 	},
 	
 	_mixin: function() {
